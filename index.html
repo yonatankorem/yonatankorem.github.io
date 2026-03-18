@@ -1,10 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My GitHub Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yonatan Korem — Software Architect</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --border: #2a2d3a;
+            --accent: #6c8ebf;
+            --accent-dim: #3d5a80;
+            --text: #e2e6f0;
+            --text-muted: #8890a4;
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Layout */
+        .container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+        /* Nav */
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-name {
+            font-family: var(--mono);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .nav-name span { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+        .hero .tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 540px;
+        }
+        .hero .tagline strong { color: var(--text); }
+
+        /* Sections */
+        section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+        section:last-child { border-bottom: none; }
+
+        h2 {
+            font-size: 0.75rem;
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        /* About */
+        .about-text p + p { margin-top: 14px; }
+        .about-text p { color: var(--text-muted); }
+        .about-text p strong { color: var(--text); }
+
+        /* Meta project box */
+        .meta-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-dim);
+            border-radius: 4px;
+            padding: 24px;
+        }
+        .meta-box h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .meta-box p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+        .meta-box .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .tag {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 3px 10px;
+            border-radius: 3px;
+        }
+
+        /* Placeholder cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px;
+            opacity: 0.5;
+        }
+        .card .card-label {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+        .card p { font-size: 0.88rem; color: var(--text-muted); }
+
+        /* Footer */
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        footer p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--mono);
+        }
+        footer a { color: var(--text-muted); }
+        footer a:hover { color: var(--accent); }
+    </style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>Welcome to my GitHub Pages site.</p>
+
+    <main>
+        <div class="container">
+
+            <section class="hero">
+                <h1>Yonatan Korem</h1>
+                <p class="tagline">
+                    <strong>Software Architect</strong> with 13+ years of experience in building systems that live in unison with business goals and user needs.
+                    Currently focused on <strong>software excellence</strong> and <strong>agentic development</strong>.
+                </p>
+            </section>
+
+            <section>
+                <h2>About</h2>
+                <div class="about-text">
+                    <p>Started my software career in 2012. Over the years I've built significant experience across the stack — from individual contributor to architect shaping company-wide systems.</p>
+                    <p>For the past two years I've been driving <strong>agentic development capabilities</strong> — workflows where AI agents take on meaningful parts of the software lifecycle to increase velocity without sacrificing quality.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2>This Site</h2>
+                <div class="meta-box">
+                    <h3>An experiment in agentic development</h3>
+                    <p>
+                        This site is itself a project: built and maintained through agentic workflows using Claude Code. The goal is to demonstrate what it looks like when AI agents handle not just code generation, but the ongoing evolution of a production-ready system — architecture decisions, content, design, and all.
+                    </p>
+                    <div class="meta-tags">
+                        <span class="tag">claude-code</span>
+                        <span class="tag">github-pages</span>
+                        <span class="tag">agentic-workflows</span>
+                        <span class="tag">static-site</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Projects</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-label">Coming soon</div>
+                        <p>Projects will be listed here as they are added.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Writing</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-label">Coming soon</div>
+                        <p>Articles and writing will appear here.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>yonatan.korem@gmail.com</p>
+            <p><a href="https://github.com/yonatankorem">github.com/yonatankorem</a></p>
+        </div>
+    </footer>
+
 </body>
 </html>
