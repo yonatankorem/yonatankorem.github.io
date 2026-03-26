@@ -48,7 +48,7 @@ The redesign proceeds in four phases, each independently deployable. Phase 1 wir
 
 ## Implementation Phases
 
-### Phase 1: Navigation & Hash Routing Shell
+### Phase 1: Navigation & Hash Routing Shell **COMPLETED**
 
 **Goal**: Replace the static page structure with a routed multi-view shell. Nav is present on all views; clicking a link switches which view section is visible.
 
