@@ -134,6 +134,19 @@
             border-radius: 3px;
         }
 
+        /* Prose (rendered markdown) */
+        .prose { padding: 56px 0; }
+        .prose h1, .prose h2, .prose h3 { color: var(--text); margin-bottom: 16px; margin-top: 32px; }
+        .prose h1:first-child, .prose h2:first-child, .prose h3:first-child { margin-top: 0; }
+        .prose p { color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; }
+        .prose a { color: var(--accent); }
+        .prose ul, .prose ol { color: var(--text-muted); padding-left: 24px; margin-bottom: 14px; line-height: 1.7; }
+        .prose blockquote { border-left: 3px solid var(--accent-dim); padding-left: 16px; color: var(--text-muted); margin: 20px 0; }
+        .prose code { font-family: var(--mono); font-size: 0.88em; background: var(--surface); padding: 2px 6px; border-radius: 3px; }
+        .prose pre { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px; overflow-x: auto; margin-bottom: 14px; }
+        .prose pre code { background: none; padding: 0; font-size: 0.85em; }
+        .prose img { max-width: 100%; border-radius: 4px; }
+
         /* Placeholder view content */
         .placeholder-text {
             padding: 80px 0;
@@ -224,10 +237,7 @@
             </div>
 
             <div id="view-about" class="view">
-                <div class="placeholder-text">
-                    <h2>About</h2>
-                    <p>Coming soon.</p>
-                </div>
+                <div id="about-content" class="prose"></div>
             </div>
 
         </div>
@@ -241,6 +251,17 @@
     </footer>
 
     <script>
+        let aboutCache = null;
+        function loadAbout() {
+            if (aboutCache) return;
+            fetch('ABOUT_ME.md')
+                .then(r => r.text())
+                .then(text => {
+                    aboutCache = marked.parse(text);
+                    document.getElementById('about-content').innerHTML = aboutCache;
+                });
+        }
+
         function router() {
             const hash = window.location.hash;
             const views = document.querySelectorAll('.view');
@@ -261,6 +282,7 @@
             } else if (hash === '#about') {
                 document.getElementById('view-about').classList.add('active');
                 document.querySelector('.nav-links a[href="#about"]').classList.add('active');
+                loadAbout();
             } else {
                 document.getElementById('view-home').classList.add('active');
             }
