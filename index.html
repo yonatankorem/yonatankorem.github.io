@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yonatan Korem — Software Architect</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -49,6 +50,23 @@
             color: var(--text-muted);
         }
         .nav-name span { color: var(--accent); }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+        .nav-links a {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+        .nav-links a:hover { color: var(--text); text-decoration: none; }
+        .nav-links a.active { color: var(--accent); }
+
+        /* Views */
+        .view { display: none; }
+        .view.active { display: block; }
 
         /* Hero */
         .hero {
@@ -68,9 +86,12 @@
         }
         .hero .tagline strong { color: var(--text); }
 
-        /* Sections */
-        section { padding: 56px 0; border-bottom: 1px solid var(--border); }
-        section:last-child { border-bottom: none; }
+        /* Content blocks within views */
+        .content-block {
+            padding: 56px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .content-block:last-child { border-bottom: none; }
 
         h2 {
             font-size: 0.75rem;
@@ -80,11 +101,6 @@
             color: var(--accent);
             margin-bottom: 24px;
         }
-
-        /* About */
-        .about-text p + p { margin-top: 14px; }
-        .about-text p { color: var(--text-muted); }
-        .about-text p strong { color: var(--text); }
 
         /* Meta project box */
         .meta-box {
@@ -118,28 +134,12 @@
             border-radius: 3px;
         }
 
-        /* Placeholder cards */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 20px;
-            opacity: 0.5;
-        }
-        .card .card-label {
-            font-family: var(--mono);
-            font-size: 0.7rem;
+        /* Placeholder view content */
+        .placeholder-text {
+            padding: 80px 0;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
+            font-size: 0.92rem;
         }
-        .card p { font-size: 0.88rem; color: var(--text-muted); }
 
         /* Footer */
         footer {
@@ -164,60 +164,71 @@
 </head>
 <body>
 
+    <nav>
+        <div class="container">
+            <a href="#" class="nav-name">yonatan<span>.korem</span></a>
+            <div class="nav-links">
+                <a href="#posts">Posts</a>
+                <a href="#projects">Projects</a>
+                <a href="#about">About</a>
+            </div>
+        </div>
+    </nav>
+
     <main>
         <div class="container">
 
-            <section class="hero">
-                <h1>Yonatan Korem</h1>
-                <p class="tagline">
-                    <strong>Software Architect</strong> with 13+ years of experience in building systems that live in unison with business goals and user needs.
-                    Currently focused on <strong>software excellence</strong> and <strong>agentic development</strong>.
-                </p>
-            </section>
-
-            <section>
-                <h2>About</h2>
-                <div class="about-text">
-                    <p>Started my software career in 2012. Over the years I've built significant experience across the stack — from individual contributor to architect shaping company-wide systems.</p>
-                    <p>For the past two years I've been driving <strong>agentic development capabilities</strong> — workflows where AI agents take on meaningful parts of the software lifecycle to increase velocity without sacrificing quality.</p>
-                </div>
-            </section>
-
-            <section>
-                <h2>This Site</h2>
-                <div class="meta-box">
-                    <h3>An experiment in agentic development</h3>
-                    <p>
-                        This site is itself a project: built and maintained through agentic workflows using Claude Code. The goal is to demonstrate what it looks like when AI agents handle not just code generation, but the ongoing evolution of a production-ready system — architecture decisions, content, design, and all.
+            <div id="view-home" class="view">
+                <div class="hero">
+                    <h1>Yonatan Korem</h1>
+                    <p class="tagline">
+                        <strong>Software Architect</strong> with 13+ years of experience in building systems that live in unison with business goals and user needs.
+                        Currently focused on <strong>software excellence</strong> and <strong>agentic development</strong>.
                     </p>
-                    <div class="meta-tags">
-                        <span class="tag">claude-code</span>
-                        <span class="tag">github-pages</span>
-                        <span class="tag">agentic-workflows</span>
-                        <span class="tag">static-site</span>
+                </div>
+                <div class="content-block">
+                    <h2>This Site</h2>
+                    <div class="meta-box">
+                        <h3>An experiment in agentic development</h3>
+                        <p>
+                            This site is itself a project: built and maintained through agentic workflows using Claude Code. The goal is to demonstrate what it looks like when AI agents handle not just code generation, but the ongoing evolution of a production-ready system — architecture decisions, content, design, and all.
+                        </p>
+                        <div class="meta-tags">
+                            <span class="tag">claude-code</span>
+                            <span class="tag">github-pages</span>
+                            <span class="tag">agentic-workflows</span>
+                            <span class="tag">static-site</span>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section>
-                <h2>Projects</h2>
-                <div class="card-grid">
-                    <div class="card">
-                        <div class="card-label">Coming soon</div>
-                        <p>Projects will be listed here as they are added.</p>
-                    </div>
+            <div id="view-posts" class="view">
+                <div class="placeholder-text">
+                    <h2>Posts</h2>
+                    <p>Coming soon.</p>
                 </div>
-            </section>
+            </div>
 
-            <section>
-                <h2>Writing</h2>
-                <div class="card-grid">
-                    <div class="card">
-                        <div class="card-label">Coming soon</div>
-                        <p>Articles and writing will appear here.</p>
-                    </div>
+            <div id="view-post-detail" class="view">
+                <div class="placeholder-text">
+                    <p>Post detail coming soon.</p>
                 </div>
-            </section>
+            </div>
+
+            <div id="view-projects" class="view">
+                <div class="placeholder-text">
+                    <h2>Projects</h2>
+                    <p>Coming soon.</p>
+                </div>
+            </div>
+
+            <div id="view-about" class="view">
+                <div class="placeholder-text">
+                    <h2>About</h2>
+                    <p>Coming soon.</p>
+                </div>
+            </div>
 
         </div>
     </main>
@@ -228,6 +239,36 @@
             <p><a href="https://github.com/yonatankorem">github.com/yonatankorem</a></p>
         </div>
     </footer>
+
+    <script>
+        function router() {
+            const hash = window.location.hash;
+            const views = document.querySelectorAll('.view');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            views.forEach(v => v.classList.remove('active'));
+            navLinks.forEach(a => a.classList.remove('active'));
+
+            if (hash.startsWith('#posts/')) {
+                document.getElementById('view-post-detail').classList.add('active');
+                document.querySelector('.nav-links a[href="#posts"]').classList.add('active');
+            } else if (hash === '#posts') {
+                document.getElementById('view-posts').classList.add('active');
+                document.querySelector('.nav-links a[href="#posts"]').classList.add('active');
+            } else if (hash === '#projects') {
+                document.getElementById('view-projects').classList.add('active');
+                document.querySelector('.nav-links a[href="#projects"]').classList.add('active');
+            } else if (hash === '#about') {
+                document.getElementById('view-about').classList.add('active');
+                document.querySelector('.nav-links a[href="#about"]').classList.add('active');
+            } else {
+                document.getElementById('view-home').classList.add('active');
+            }
+        }
+
+        window.addEventListener('hashchange', router);
+        router();
+    </script>
 
 </body>
 </html>
