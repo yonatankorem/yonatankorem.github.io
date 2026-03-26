@@ -151,9 +151,9 @@ The deep dive skill challenges the developer's assumptions. The planning skill g
 
 | Component | Purpose |
 |---|---|
-| `CLAUDE.md` Core Laws | Defines the agent's judgment framework and priority rules |
-| `deep-dive` skill | Stress-tests ideas through structured interviewing before anything is built |
-| `prd-to-plan` skill | Converts requirements into a grounded, phase-based execution plan |
-| `implement-phase` skill | Executes one phase at a time with checkpoints and human approval gates |
+| `CLAUDE.md` | Core laws that define the agent's judgment framework and priority rules |
+| `deep-dive` | Stress-tests ideas through structured interviewing before anything is built |
+| `prd-to-plan` | Converts requirements into a grounded, phase-based execution plan |
+| `implement-phase` | Executes one phase at a time with checkpoints and human approval gates |
 
 The website is just content. The system around it is an experiment in building agentic workflows that behave like careful engineers — not because they're incapable of moving fast, but because they've been explicitly configured to know when not to.
