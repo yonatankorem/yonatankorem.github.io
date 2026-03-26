@@ -147,6 +147,21 @@
         .prose pre code { background: none; padding: 0; font-size: 0.85em; }
         .prose img { max-width: 100%; border-radius: 4px; }
 
+        /* Post cards */
+        .post-card {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            color: inherit;
+        }
+        .post-card:hover { border-color: var(--accent-dim); text-decoration: none; }
+        .post-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+        .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
+        .post-card-desc { font-size: 0.88rem; color: var(--text-muted); }
+
         /* Placeholder view content */
         .placeholder-text {
             padding: 80px 0;
@@ -217,16 +232,15 @@
             </div>
 
             <div id="view-posts" class="view">
-                <div class="placeholder-text">
+                <div style="padding: 56px 0;">
                     <h2>Posts</h2>
-                    <p>Coming soon.</p>
+                    <div id="posts-list" style="margin-top: 0;"></div>
                 </div>
             </div>
 
             <div id="view-post-detail" class="view">
-                <div class="placeholder-text">
-                    <p>Post detail coming soon.</p>
-                </div>
+                <a href="#posts" id="back-to-posts" style="display:inline-block; padding: 40px 0 0; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted);">← posts</a>
+                <div id="post-content" class="prose" style="padding-top: 24px;"></div>
             </div>
 
             <div id="view-projects" class="view">
@@ -251,6 +265,39 @@
     </footer>
 
     <script>
+        let postsCache = null;
+        function loadPostsList() {
+            if (postsCache) return renderPostsList(postsCache);
+            fetch('posts/index.json')
+                .then(r => r.json())
+                .then(posts => {
+                    postsCache = posts.sort((a, b) => b.date.localeCompare(a.date));
+                    renderPostsList(postsCache);
+                });
+        }
+        function renderPostsList(posts) {
+            document.getElementById('posts-list').innerHTML = posts.map(p =>
+                `<a href="#posts/${p.slug}" class="post-card">
+                    <div class="post-card-title">${p.title}</div>
+                    <div class="post-card-meta">${p.date}</div>
+                    <div class="post-card-desc">${p.description}</div>
+                </a>`
+            ).join('');
+        }
+
+        const postContentCache = {};
+        function loadPost(slug) {
+            const el = document.getElementById('post-content');
+            if (postContentCache[slug]) { el.innerHTML = postContentCache[slug]; return; }
+            fetch(`posts/${slug}.md`)
+                .then(r => r.text())
+                .then(text => {
+                    const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
+                    postContentCache[slug] = marked.parse(body);
+                    el.innerHTML = postContentCache[slug];
+                });
+        }
+
         let aboutCache = null;
         function loadAbout() {
             if (aboutCache) return;
@@ -273,9 +320,11 @@
             if (hash.startsWith('#posts/')) {
                 document.getElementById('view-post-detail').classList.add('active');
                 document.querySelector('.nav-links a[href="#posts"]').classList.add('active');
+                loadPost(hash.slice('#posts/'.length));
             } else if (hash === '#posts') {
                 document.getElementById('view-posts').classList.add('active');
                 document.querySelector('.nav-links a[href="#posts"]').classList.add('active');
+                loadPostsList();
             } else if (hash === '#projects') {
                 document.getElementById('view-projects').classList.add('active');
                 document.querySelector('.nav-links a[href="#projects"]').classList.add('active');
