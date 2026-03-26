@@ -91,7 +91,7 @@ The redesign proceeds in four phases, each independently deployable. Phase 1 wir
 
 ---
 
-### Phase 2: Home and About Views
+### Phase 2: Home and About Views **COMPLETED**
 
 **Goal**: Populate the Home view with the existing hero content (cleaned up) and the About view by fetching and rendering `ABOUT_ME.md` with marked.js.
 
