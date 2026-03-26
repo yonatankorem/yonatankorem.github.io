@@ -119,7 +119,7 @@ The redesign proceeds in four phases, each independently deployable. Phase 1 wir
 
 ---
 
-### Phase 3: Posts System
+### Phase 3: Posts System **COMPLETED**
 
 **Goal**: Add the posts list view (cards from `posts/index.json`) and the post detail view (fetch and render a single `.md` file).
 
