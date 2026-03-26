@@ -156,7 +156,7 @@ The redesign proceeds in four phases, each independently deployable. Phase 1 wir
 
 ---
 
-### Phase 4: Projects System
+### Phase 4: Projects System **COMPLETED**
 
 **Goal**: Add the projects list view using `projects/index.json`. Projects have richer metadata (status, repo, tags) than posts.
 
