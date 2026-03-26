@@ -317,7 +317,7 @@
             fetch(`posts/${slug}.md`)
                 .then(r => r.text())
                 .then(text => {
-                    const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
+                    const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
                     postContentCache[slug] = marked.parse(body);
                     el.innerHTML = postContentCache[slug];
                 });
@@ -358,7 +358,7 @@
             fetch(`projects/${slug}.md`)
                 .then(r => r.text())
                 .then(text => {
-                    const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
+                    const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
                     projectContentCache[slug] = marked.parse(body);
                     contentEl.innerHTML = projectContentCache[slug];
                     if (!meta) {
