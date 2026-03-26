@@ -162,6 +162,22 @@
         .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
         .post-card-desc { font-size: 0.88rem; color: var(--text-muted); }
 
+        /* Project cards */
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+        }
+        .project-card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+        .project-card-name { font-size: 1rem; font-weight: 600; color: var(--text); }
+        .badge { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .badge-active { color: var(--accent); }
+        .badge-experiment { color: var(--text-muted); }
+        .badge-archived { color: var(--border); }
+        .project-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
         /* Placeholder view content */
         .placeholder-text {
             padding: 80px 0;
@@ -244,9 +260,9 @@
             </div>
 
             <div id="view-projects" class="view">
-                <div class="placeholder-text">
+                <div style="padding: 56px 0;">
                     <h2>Projects</h2>
-                    <p>Coming soon.</p>
+                    <div id="projects-list"></div>
                 </div>
             </div>
 
@@ -298,6 +314,31 @@
                 });
         }
 
+        let projectsCache = null;
+        function loadProjectsList() {
+            if (projectsCache) return renderProjectsList(projectsCache);
+            fetch('projects/index.json')
+                .then(r => r.json())
+                .then(projects => {
+                    projectsCache = projects;
+                    renderProjectsList(projectsCache);
+                });
+        }
+        function renderProjectsList(projects) {
+            document.getElementById('projects-list').innerHTML = projects.map(p => {
+                const tags = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+                const repoLink = p.repo ? `<a href="${p.repo}" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:0.75rem;color:var(--text-muted);">${p.repo.replace('https://', '')}</a>` : '';
+                return `<div class="project-card">
+                    <div class="project-card-header">
+                        <span class="project-card-name">${p.name}</span>
+                        <span class="badge badge-${p.status}">${p.status}</span>
+                    </div>
+                    ${repoLink}
+                    <div class="project-card-tags">${tags}</div>
+                </div>`;
+            }).join('');
+        }
+
         let aboutCache = null;
         function loadAbout() {
             if (aboutCache) return;
@@ -328,6 +369,7 @@
             } else if (hash === '#projects') {
                 document.getElementById('view-projects').classList.add('active');
                 document.querySelector('.nav-links a[href="#projects"]').classList.add('active');
+                loadProjectsList();
             } else if (hash === '#about') {
                 document.getElementById('view-about').classList.add('active');
                 document.querySelector('.nav-links a[href="#about"]').classList.add('active');
