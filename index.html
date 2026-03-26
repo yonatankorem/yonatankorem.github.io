@@ -164,12 +164,15 @@
 
         /* Project cards */
         .project-card {
+            display: block;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 4px;
             padding: 20px 24px;
             margin-bottom: 12px;
+            color: inherit;
         }
+        .project-card:hover { border-color: var(--accent-dim); text-decoration: none; }
         .project-card-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
         .project-card-name { font-size: 1rem; font-weight: 600; color: var(--text); }
         .badge { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -266,6 +269,12 @@
                 </div>
             </div>
 
+            <div id="view-project-detail" class="view">
+                <a href="#projects" style="display:inline-block; padding: 40px 0 0; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted);">← projects</a>
+                <div id="project-detail-header" style="padding: 32px 0 0;"></div>
+                <div id="project-content" class="prose" style="padding-top: 0;"></div>
+            </div>
+
             <div id="view-about" class="view">
                 <div id="about-content" class="prose"></div>
             </div>
@@ -327,16 +336,48 @@
         function renderProjectsList(projects) {
             document.getElementById('projects-list').innerHTML = projects.map(p => {
                 const tags = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
-                const repoLink = p.repo ? `<a href="${p.repo}" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:0.75rem;color:var(--text-muted);">${p.repo.replace('https://', '')}</a>` : '';
-                return `<div class="project-card">
+                return `<a href="#projects/${p.slug}" class="project-card">
                     <div class="project-card-header">
                         <span class="project-card-name">${p.name}</span>
                         <span class="badge badge-${p.status}">${p.status}</span>
                     </div>
-                    ${repoLink}
                     <div class="project-card-tags">${tags}</div>
-                </div>`;
+                </a>`;
             }).join('');
+        }
+
+        const projectContentCache = {};
+        function loadProject(slug) {
+            const contentEl = document.getElementById('project-content');
+            const headerEl = document.getElementById('project-detail-header');
+            const meta = projectsCache && projectsCache.find(p => p.slug === slug);
+
+            if (meta) renderProjectHeader(headerEl, meta);
+
+            if (projectContentCache[slug]) { contentEl.innerHTML = projectContentCache[slug]; return; }
+            fetch(`projects/${slug}.md`)
+                .then(r => r.text())
+                .then(text => {
+                    const body = text.replace(/^---\n[\s\S]*?\n---\n/, '');
+                    projectContentCache[slug] = marked.parse(body);
+                    contentEl.innerHTML = projectContentCache[slug];
+                    if (!meta) {
+                        fetch('projects/index.json').then(r => r.json()).then(projects => {
+                            projectsCache = projects;
+                            renderProjectHeader(headerEl, projects.find(p => p.slug === slug));
+                        });
+                    }
+                });
+        }
+        function renderProjectHeader(el, p) {
+            if (!p) return;
+            const repo = p.repo
+                ? `<a href="${p.repo}" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:0.75rem;color:var(--text-muted);">${p.repo.replace('https://', '')}</a>`
+                : '';
+            el.innerHTML = `<div style="margin-bottom:8px;">
+                <span style="font-size:1.4rem;font-weight:700;color:var(--text);margin-right:12px;">${p.name}</span>
+                <span class="badge badge-${p.status}">${p.status}</span>
+            </div>${repo}`;
         }
 
         let aboutCache = null;
@@ -366,6 +407,10 @@
                 document.getElementById('view-posts').classList.add('active');
                 document.querySelector('.nav-links a[href="#posts"]').classList.add('active');
                 loadPostsList();
+            } else if (hash.startsWith('#projects/')) {
+                document.getElementById('view-project-detail').classList.add('active');
+                document.querySelector('.nav-links a[href="#projects"]').classList.add('active');
+                loadProject(hash.slice('#projects/'.length));
             } else if (hash === '#projects') {
                 document.getElementById('view-projects').classList.add('active');
                 document.querySelector('.nav-links a[href="#projects"]').classList.add('active');
