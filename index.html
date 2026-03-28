@@ -153,6 +153,7 @@
         /* Post cards */
         .post-card {
             display: block;
+            position: relative;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 4px;
@@ -162,7 +163,7 @@
         }
         .post-card:hover { border-color: var(--accent-dim); text-decoration: none; }
         .post-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
-        .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
+        .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); position: absolute; top: 20px; right: 24px; }
         .post-card-desc { font-size: 0.88rem; color: var(--text-muted); }
 
         /* Project cards */
