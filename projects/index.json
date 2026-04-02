@@ -1,7 +1,13 @@
 [
   {
+    "slug": "what-happens-to-an-ai-agent-on-a-legacy-codebase",
+    "name": "What Happens to an AI Agent on a Legacy Codebase?",
+    "status": "active",
+    "tags": ["claude-code", "agentic-workflows", "autonomous-agents", "experiment"]
+  },
+  {
     "slug": "yonatankorem-github-io",
-    "name": "yonatankorem.github.io",
+    "name": "This Site Itself",
     "status": "active",
     "repo": "https://github.com/yonatankorem/yonatankorem.github.io",
     "tags": ["claude-code", "agentic-workflows", "github-pages"]
