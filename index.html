@@ -153,7 +153,6 @@
         /* Post cards */
         .post-card {
             display: block;
-            position: relative;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 4px;
@@ -162,8 +161,9 @@
             color: inherit;
         }
         .post-card:hover { border-color: var(--accent-dim); text-decoration: none; }
-        .post-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
-        .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); position: absolute; top: 20px; right: 24px; }
+        .post-card-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+        .post-card-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+        .post-card-meta { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
         .post-card-desc { font-size: 0.88rem; color: var(--text-muted); }
 
         /* Project cards */
@@ -301,8 +301,10 @@
         function renderPostsList(posts) {
             document.getElementById('posts-list').innerHTML = posts.map(p =>
                 `<a href="#posts/${p.slug}" class="post-card">
-                    <div class="post-card-title">${p.title}</div>
-                    <div class="post-card-meta">${p.date}</div>
+                    <div class="post-card-header">
+                        <div class="post-card-title">${p.title}</div>
+                        <div class="post-card-meta">${p.date}</div>
+                    </div>
                     <div class="post-card-desc">${p.description}</div>
                 </a>`
             ).join('');
