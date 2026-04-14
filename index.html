@@ -211,6 +211,31 @@
         }
         footer a { color: var(--text-muted); }
         footer a:hover { color: var(--accent); }
+
+        /* Share button */
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: all 0.2s ease;
+        }
+        .share-button:hover { border-color: var(--accent-dim); color: var(--text); }
+        .share-button:active { transform: scale(0.98); }
+        .share-button.copied {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -288,6 +313,33 @@
     </footer>
 
     <script>
+        function createShareButton(url, title) {
+            const button = document.createElement('button');
+            button.className = 'share-button';
+            button.innerHTML = '↗ Share';
+            button.type = 'button';
+
+            button.addEventListener('click', async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({ title, url });
+                    } catch (err) {
+                        if (err.name !== 'AbortError') console.error(err);
+                    }
+                } else {
+                    navigator.clipboard.writeText(url);
+                    button.classList.add('copied');
+                    button.innerHTML = '✓ Copied';
+                    setTimeout(() => {
+                        button.classList.remove('copied');
+                        button.innerHTML = '↗ Share';
+                    }, 2000);
+                }
+            });
+
+            return button;
+        }
+
         let postsCache = null;
         function loadPostsList() {
             if (postsCache) return renderPostsList(postsCache);
@@ -313,13 +365,21 @@
         const postContentCache = {};
         function loadPost(slug) {
             const el = document.getElementById('post-content');
-            if (postContentCache[slug]) { el.innerHTML = postContentCache[slug]; return; }
+            const renderPost = (html) => {
+                el.innerHTML = html;
+                const shareButton = createShareButton(
+                    `${window.location.origin}${window.location.pathname}#posts/${slug}`,
+                    postsCache?.find(p => p.slug === slug)?.title || 'Post'
+                );
+                el.appendChild(shareButton);
+            };
+            if (postContentCache[slug]) { return renderPost(postContentCache[slug]); }
             fetch(`posts/${slug}.md`)
                 .then(r => r.text())
                 .then(text => {
                     const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
                     postContentCache[slug] = marked.parse(body);
-                    el.innerHTML = postContentCache[slug];
+                    renderPost(postContentCache[slug]);
                 });
         }
 
@@ -354,13 +414,23 @@
 
             if (meta) renderProjectHeader(headerEl, meta);
 
-            if (projectContentCache[slug]) { contentEl.innerHTML = projectContentCache[slug]; return; }
+            const renderProjectContent = (html) => {
+                contentEl.innerHTML = html;
+                const projectTitle = meta?.name || projectsCache?.find(p => p.slug === slug)?.name || 'Project';
+                const shareButton = createShareButton(
+                    `${window.location.origin}${window.location.pathname}#projects/${slug}`,
+                    projectTitle
+                );
+                contentEl.appendChild(shareButton);
+            };
+
+            if (projectContentCache[slug]) { return renderProjectContent(projectContentCache[slug]); }
             fetch(`projects/${slug}.md`)
                 .then(r => r.text())
                 .then(text => {
                     const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
                     projectContentCache[slug] = marked.parse(body);
-                    contentEl.innerHTML = projectContentCache[slug];
+                    renderProjectContent(projectContentCache[slug]);
                     if (!meta) {
                         fetch('projects/index.json').then(r => r.json()).then(projects => {
                             projectsCache = projects;
