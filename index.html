@@ -135,7 +135,6 @@
         }
 
         /* Prose (rendered markdown) */
-        .prose { padding: 56px 0; }
         .prose h1, .prose h2, .prose h3 { color: var(--text); margin-bottom: 16px; margin-top: 32px; }
         .prose h1:first-child, .prose h2:first-child, .prose h3:first-child { margin-top: 0; }
         .prose p { color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; }
@@ -235,6 +234,21 @@
         .share-button.copied {
             border-color: var(--accent);
             color: var(--accent);
+        }
+
+        /* Subscribe block */
+        .subscribe-block {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        .subscribe-label {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 16px;
         }
     </style>
 </head>
@@ -340,6 +354,14 @@
             return button;
         }
 
+        function createSubscribeBlock() {
+            const block = document.createElement('div');
+            block.className = 'subscribe-block';
+            block.innerHTML = '<p class="subscribe-label">More like this in your inbox</p>'
+                + '<iframe width="540" height="270" src="https://e66acbad.sibforms.com/serve/MUIFALrrjAC76CNXjVLpzaS2--GmEkw2SuBgQCIqUJ7xBiloiEBkMAWC0vylSwBxa3x0wgu0oPq0Pi-3MguJ79dwl62eC7lLmgfWxzwrVOhZpSqvOU7SBeHS9P23jO-3T93vUY58MmoGakIA4QiO6gyLVNn62wgr9g0ppMXINunuKHDi2zTxtCznaSj0SvbBm0vjYzCzRGa2gbTsfQ==" frameborder="0" scrolling="auto" allowfullscreen="" style="display:block;margin-left:auto;margin-right:auto;max-width:100%;"></iframe>';
+            return block;
+        }
+
         let postsCache = null;
         function loadPostsList() {
             if (postsCache) return renderPostsList(postsCache);
@@ -372,6 +394,7 @@
                     postsCache?.find(p => p.slug === slug)?.title || 'Post'
                 );
                 el.appendChild(shareButton);
+                el.appendChild(createSubscribeBlock());
             };
             if (postContentCache[slug]) { return renderPost(postContentCache[slug]); }
             fetch(`posts/${slug}.md`)
@@ -422,6 +445,7 @@
                     projectTitle
                 );
                 contentEl.appendChild(shareButton);
+                contentEl.appendChild(createSubscribeBlock());
             };
 
             if (projectContentCache[slug]) { return renderProjectContent(projectContentCache[slug]); }
