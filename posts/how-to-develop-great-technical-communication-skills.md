@@ -20,9 +20,9 @@ This process starts with two parallel tracks: Understanding the audience and the
 ### Know Your Audience
 Understanding who your audience is, what they know, and what they need from your document or presentation is the first step in creating effective communication.
 Ask yourself:
-- How well do they know the topic? Are they new to the topic or are they experts?
-- Do they need in depth understanding or just a high level overview?
-- Do they need the trade-offs and the context or are they just interested in the final decision?
+- How well do they know the topic? Are they new to the topic or are they experts.
+- Do they need in depth understanding or just a high level overview.
+- Do they need the trade-offs and the context or are they just interested in the final decision.
 
 With a better understanding of your audience, you will know how to structure the information and what pitfalls to avoid.
 
@@ -43,9 +43,9 @@ Don't assume that they know all the lingo, understand protocols, or are familiar
 Developers often feel measured against other developers (because they usually are). This causes them to take their lack of knowledge as something THEY must fix, instead of asking for a clarification. That's not a bad thing, until their understanding does not align with others.
 
 Best practices for developers:  
-- Use accurate language instead of buzzwords
-- Include a glossary or references to documentation for terms and concepts that are not common knowledge
-- Use code examples and low level diagrams to explain the problem and the solution
+- Use accurate language instead of buzzwords.
+- Include a glossary or references to documentation for terms and concepts that are not common knowledge.
+- Use code examples and low level diagrams to explain the problem and the solution.
 - Avoid hiding the trade-offs and negatives of a solution, even if the decision was already made. It will make you look bad when someone questions it.
 
 ### Architects
@@ -75,7 +75,7 @@ This trust is important, but do not expect blind trust. They might challenge or 
 Best practices for managers:
 - You have to know the questions you are expected to answer. If the information they need is not included in your presentation, you might have wasted their time and be seen as ill prepared.
 - Start with some context to make sure the manager is on the same page. They might even remember the context from the last meeting.
-- Lead with the answers to the questions the manager is looking for. 
+- Lead with the answers to the questions the manager is looking for.
 - Provide a concise summary of the trade-offs and the context. Use quantifiable metrics where possible.
 
 ### Product
@@ -106,7 +106,7 @@ Constructing a mental model can be difficult, and different people have differen
 
 Best practices for explaining a topic:
 - Start with the big picture and gradually zoom in.
-- Apply tools that help build mental models like diagrams, analogies, and examples
+- Apply tools that help build mental models like diagrams, analogies, and examples.
 - Use a clear, concise, and most importantly, consistent language.
 - Avoid jargon and technical terms where possible.
 - Use a consistent formatting.
@@ -128,7 +128,7 @@ Both cases can be solved by the same solution: You must be explicit. Sit down wi
 
 Best practices for creating alignment:
 - Use a glossary at the top. This helps avoid the audience going through half of your content before realizing they misunderstood something.
-- Avoid acronyms as much as possible. If you must, the first time the acronym is mentioned, it must be followed directly with the original form. The exception to this rule is when the acronym is ubiqoutus (e.g. AWS)
+- Avoid acronyms as much as possible. If you must, the first time the acronym is mentioned, it must be followed directly with the original form. The exception to this rule is when the acronym is ubiqoutus (e.g. AWS).
 - After giving the explicit definition, provide two or three examples using realistic use cases. If you have examples that actually happened, all the better.
 - The document must be widely available and stored in a familiar place. Do not store it on your personal cloud storage.
 
@@ -183,15 +183,15 @@ To help resolve this I understood that the document I was going to create will b
 
 **The Funnel**
 *Stage A*: A user is considered to be in this stage when
-- They provided us with contact information
+- They provided us with contact information.
 
 *Stage B*: A user is considered to be in this stage when
-- They match the criteria for *stage A* AND
-- They scheduled a meeting with our sales team
+- They match the criteria for *stage A*.
+- They scheduled a meeting with our sales team.
 
 *Stage C*: A user is considered to be in this stage when
-- They match the criteria for *stage B* AND
-- They have at least one successful meeting recorded
+- They match the criteria for *stage B*.
+- They have at least one successful meeting recorded.
 
 *Stage D*: ....
 
