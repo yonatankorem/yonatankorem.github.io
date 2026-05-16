@@ -15,7 +15,7 @@ Over the past year, working with Claude Code across codebases of different sizes
 ages, I noticed something quieter: when the codebase itself was structured in certain
 ways, results improved without any agent instruction at all. More accurate edits, fewer
 hallucinated method calls, better behavior from smaller models. I started calling these
-"passive context management" -- practices that improve agent results without any
+"passive context management": practices that improve agent results without any
 specific interface with the agent.
 
 I'll walk you through seven of them. I'll tell you upfront: every single one is a
@@ -27,15 +27,15 @@ cleanly onto AI agent performance.
 ---
 
 ## 1. Files With a Highly Focused Topic Over "God Files"
-Keep your files **focused** as much as possible. A file is "focused" when it contains *everything* it needs to function and *nothing else*. It is responsible for a single topic and is only accessed when that specific topic is needed (for understanding or modification). A React component file that contains only the HTML and UI logic for it has all it needs to work. It does not *need* to have the code that sends the form to the backend, or the color scheme to style it.  
+Keep your files **focused** as much as possible. A file is "focused" when it contains *everything* it needs to function and *nothing else*. It is responsible for a single topic and is only accessed when that specific topic is needed (for understanding or modification). A React component file that contains only the HTML and UI logic for it has all it needs to work. It does not *need* to have the code that sends the form to the backend, or the color scheme to style it.
 
-Consider how agents understand what files to load into their context? If it has been tasked with modifying business logic regarding how the system handles new messages, how will it know what to load?
+How does an agent decide which files to load into its context? If it has been tasked with modifying business logic regarding how the system handles new messages, it might:
 - Look for files containing keywords like `incoming` or `message`
-- Look for files containing message queue subscription code 
+- Look for files containing message queue subscription code
 - Filter files based on their path or name to abandon files that are probably irrelevant for this query
 
 A class that handles incoming messages, business logic, DB access, and error handling might feel like it will improve results as the agent will find everything it needs in it, but it will also include a lot of things it does not need which we know has a negative impact of context rot. Anthropic's own guidance reflects this. They recommend capping CLAUDE.md at 200 lines specifically because long context degrades model attention and increases the risk of the model losing track of earlier content.  
-If the business logic is spread around over a number of files, we get the worse of both worlds: it is more likely that the LLM misses a bit of related code, or needs to load multiple files into the context in order to be able to reason about it all.
+If the business logic is spread around over a number of files, we get the worst of both worlds: it is more likely that the LLM misses a bit of related code, or needs to load multiple files into the context in order to be able to reason about it all.
 
 A focused UI component only enters the context when the agent needs to understand or change the UI. Nothing else drags it in.
 
@@ -43,7 +43,8 @@ A focused UI component only enters the context when the agent needs to understan
 A function/class/module should not be aware of the concrete implementation, but use only the defined interface. When the agent goes to change something in how this function works, it will be limited to the interface alone, and hopefully not even load the implementation into context.  
 The agent is less likely to invent new functionality, use a method not intended for this flow, or expose private methods because it is "convenient".  
 
-Compound this with smaller, dedicated interfaces for even better results:
+Compound this with smaller, dedicated interfaces for even better results:  
+
 **Bad**
 ```typescript
 class DBAccessImpl {
@@ -138,7 +139,7 @@ class Logic {
 }
 ```
 
-Combined with tip 1 (if the interface and implementation are in different files) will mean that the agent doesn't even load the implementation into the context!
+Combining this with tip 1 "keeping the interface and implementation in separate files" means the agent never loads the implementation into the context at all.
 
 ## 3. Deterministic Validity Over Probabilistic Reasoning
 Some passive improvements are about reducing the need for reasoning instead of just context window management.
@@ -148,7 +149,7 @@ In `createUser(firstName, lastName, birthDate)` it is safe to assume that all pa
 What about `fetch(url, options)`? Yes, `url` is probably a string and even though `fetch` is an incredibly common function, it is not immediately obvious what `options` contains.  
 But worse still is the uncommon function. The event handler `handleMessage(message, context)` is a real problem. `context` is a real mystery without reasoning what it means by inspecting the function implementation.
 
-This version, will require no reasoning whatsoever:
+This version will require no reasoning whatsoever:
 ```typescript
 function handleMessage(message: string, context: { source: string, timezone: string, isUrgent: boolean}) {
     ...
@@ -198,10 +199,11 @@ These snippets do the exact same thing:
   service.emit('email', { to: 'user@example.com' });
 ```
 
-If you review the LLM training material, it is much more likely that the established pattern code appears in it much more. This is part of the reason it is "well established". Hence, it is both easier to reason about what it does and it is easier to extend for the LLM, as it has more "examples" on how to use it.
+Established pattern code appears far more frequently in training data. This is part of the reason it is "well established". Hence, it is both easier to reason about what it does and it is easier to extend for the LLM, as it has more "examples" on how to use it.
 
 ## 5. Named Constants Over Magic Numbers
-This again touches on the need to reason about pieces of code. Magic numbers (hard coded numeric values) are just more difficult to reason about, on a number of different "axis".
+This again touches on the need to reason about pieces of code. Magic numbers (hard coded numeric values) are just more difficult to reason about, on a number of different "axes".
+
 **WHAT is the meaning of a value?**
 `publishMessage(msg, 3)`
 Is 3 the number of attempts? Is it related to some backoff? Maybe it's an ID? Or even worse: is it an enum value index? The only way to know is to review the function implementation.
@@ -219,10 +221,11 @@ By providing a name for each, we give these numbers context that can be crucial.
 `run_with_max_depth(..., AVOIDING_OVERFLOW_LIMIT)` and `run_with_min_depth(..., MINIMAL_DEPTH_FOR_HIGH_P_VALUE)`
 This context removed the need for reasoning, which allows smaller scale models to generate better results.
 
-One small caveat: There are magic number patterns that are so familiar, that naming them is not critical at all: time spans. For the overwhelming majority of cases `1000` is one second. `60000` or `60*1000` is a minute, etc.
+One small caveat: There are magic number patterns that are so familiar that naming them is not critical at all: time spans. For the overwhelming majority of cases `1000` is one second. `60000` or `60*1000` is a minute, etc.
 
 ## 6. Comment Only When The Why Or How Are Not Obvious
-Comments are important but they have the ability to negatively impact the LLM.
+Comments are important but they have the ability to negatively impact the LLM.  
+
 **At best they take up context for no good reason**
 ```typescript
 // Iterate on the entire array to search for an element that matches the criteria
@@ -237,7 +240,8 @@ if (user.role === 'moderator') {
 ```
 The comment says "admin" but the code checks for "moderator". Was the code changed and the comment forgotten? Or is the comment wrong about the intent? A reader can't trust either one now.
 
-When used sparingly and when actually needed, they become a reliable source of important context, which can *improve* the LLM results
+When used sparingly and when actually needed, they become a reliable source of important context, which can *improve* the LLM results.
+
 **To explain the HOW (for a non trivial implementation)**
 ```typescript
 // We iterate backwards through the array and swap with the current position.
