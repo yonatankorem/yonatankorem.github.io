@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yonatan Korem — Software Architect</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -384,11 +386,17 @@
             ).join('');
         }
 
+        function highlightCode(el) {
+            if (typeof hljs === 'undefined') return;
+            el.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+        }
+
         const postContentCache = {};
         function loadPost(slug) {
             const el = document.getElementById('post-content');
             const renderPost = (html) => {
                 el.innerHTML = html;
+                highlightCode(el);
                 const shareButton = createShareButton(
                     `${window.location.origin}${window.location.pathname}#posts/${slug}`,
                     postsCache?.find(p => p.slug === slug)?.title || 'Post'
@@ -439,6 +447,7 @@
 
             const renderProjectContent = (html) => {
                 contentEl.innerHTML = html;
+                highlightCode(contentEl);
                 const projectTitle = meta?.name || projectsCache?.find(p => p.slug === slug)?.name || 'Project';
                 const shareButton = createShareButton(
                     `${window.location.origin}${window.location.pathname}#projects/${slug}`,
