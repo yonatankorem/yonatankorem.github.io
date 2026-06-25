@@ -14,6 +14,10 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+        /* Reserve the scrollbar gutter so centered content doesn't shift
+           between views that overflow vertically and those that don't. */
+        html { scrollbar-gutter: stable; }
+
         :root {
             --bg: #0f1117;
             --surface: #1a1d27;
