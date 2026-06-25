@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yonatan Korem — Software Architect</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/styles/github-dark.min.css">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script>
@@ -47,11 +51,15 @@
             justify-content: space-between;
         }
         .nav-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             font-family: var(--mono);
             font-size: 0.9rem;
             color: var(--text-muted);
         }
-        .nav-name span { color: var(--accent); }
+        .nav-name svg { display: block; }
+        .nav-wordmark > span { color: var(--accent); }
         .nav-links {
             display: flex;
             gap: 28px;
@@ -258,7 +266,14 @@
 
     <nav>
         <div class="container">
-            <a href="#" class="nav-name">yonatan<span>.korem</span></a>
+            <a href="#" class="nav-name">
+                <svg width="26" height="24" viewBox="0 0 84 78" aria-hidden="true">
+                    <polygon points="42,0 84,23 42,46 0,23" fill="#60A5FA" fill-opacity="0.55"/>
+                    <polygon points="42,16 84,39 42,62 0,39" fill="#60A5FA" fill-opacity="0.74"/>
+                    <polygon points="42,32 84,55 42,78 0,55" fill="#60A5FA" fill-opacity="0.95"/>
+                </svg>
+                <span class="nav-wordmark">yonatan<span>.korem</span></span>
+            </a>
             <div class="nav-links">
                 <a href="#posts">Posts</a>
                 <a href="#projects">Projects</a>

@@ -1,0 +1,24 @@
+<!-- ============================================================
+     Yonatan Korem — site integration snippets
+     ============================================================ -->
+
+<!-- 1) FAVICON  ·  put these in <head>.  Paths assume an /assets/ folder. -->
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+
+<!-- 2) HEADER LOCKUP (light background)  ·  inline SVG = crisp at any size, no extra request.
+        Swap the three fill-opacity blocks' color to #60A5FA for a dark background. -->
+<a href="/" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;">
+  <svg width="34" height="32" viewBox="0 0 84 78" aria-hidden="true" style="display:block;">
+    <polygon points="42,0 84,23 42,46 0,23" fill="#2563EB" fill-opacity="0.30"/>
+    <polygon points="42,16 84,39 42,62 0,39" fill="#2563EB" fill-opacity="0.58"/>
+    <polygon points="42,32 84,55 42,78 0,55" fill="#2563EB" fill-opacity="0.92"/>
+  </svg>
+  <span style="font-family:'Space Grotesk',Helvetica,sans-serif;font-weight:600;font-size:18px;letter-spacing:-0.2px;color:#0E1726;">Yonatan Korem</span>
+</a>
+
+
+<!-- 3) Or just reference the file:  <img src="/assets/mark.svg" alt="Yonatan Korem" width="34"> -->
